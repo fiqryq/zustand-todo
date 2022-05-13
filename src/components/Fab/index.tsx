@@ -14,7 +14,7 @@ export const Fab = () => {
   return (
     <>
       <div
-        className="fixed right-32 bottom-8 cursor-pointer rounded-full bg-sky-700 p-3 px-5 font-bold text-white hover:bg-sky-800"
+        className="absolute bottom-5 right-5 cursor-pointer rounded-full bg-sky-700 p-3 px-5 font-bold text-white hover:bg-sky-800"
         onClick={() => setOpen(true)}
       >
         +
