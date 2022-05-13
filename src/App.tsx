@@ -1,9 +1,20 @@
-import Halo from "./components/Hallo";
+import { Card, Header, Fab } from "./components";
+import { Background } from "./layout/Background";
+import { Container } from "./layout/Container";
+
 function App() {
   return (
-    <div className="App">
-      <Halo />
-    </div>
+    <Background>
+      <Container>
+        <Header />
+        <div className="space-y-2 p-3 py-16">
+          <Card />
+          <Card />
+          <Card />
+        </div>
+        <Fab />
+      </Container>
+    </Background>
   );
 }
 
