@@ -1,15 +1,23 @@
 import Modal from "../Modal";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import useStore from "../../hook/useStore";
 
 export const Fab = () => {
+  const state = useStore();
   const [open, setOpen] = useState(false);
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data: any) => console.log(data);
+
+  const onSubmit = (data: any) => {
+    state.addTodo(data.todo);
+    setOpen(false);
+    reset();
+  };
 
   return (
     <>

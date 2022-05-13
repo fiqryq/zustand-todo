@@ -1,15 +1,15 @@
 import { FiMoreVertical, FiEdit, FiDelete } from "react-icons/fi";
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useRef, useState } from "react";
-
-export const Card = () => {
+import { Fragment } from "react";
+import useStore from "../../hook/useStore";
+type ICard = {
+  todo: string;
+};
+export const Card = (props: ICard) => {
+  console.log("🚀 ~ file: index.tsx ~ line 10 ~ Card ~ props", props);
   return (
     <div className="flex w-full cursor-pointer items-center justify-between rounded-md bg-slate-200/30 p-5 hover:bg-slate-500/10">
-      <p className="truncate pr-6">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem
-        necessitatibus cum nostrum ducimus rem, quibusdam cupiditate porro
-        totam, molestias, voluptate voluptates minus repellat!
-      </p>
+      <p className="truncate pr-6">{props.todo}</p>
 
       <Menu as="div" className="relative inline-block text-left">
         <div>
