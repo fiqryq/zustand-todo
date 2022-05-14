@@ -1,21 +1,41 @@
 import create from 'zustand';
 
 type IZustand = {
-    todo: Array<any>
+    todo: Array<ITodo>
     addTodo: (payload: string) => void
-    updateTodo: (payload: any) => void
+    updateTodo: (item: string, id: number) => void
+    getTodo: () => Array<any>
+    deleteTodo: (id: number) => void
+}
+
+type ITodo = {
+    title: string
 }
 
 const useStore = create<IZustand>((set, get) => ({
     todo: [],
-    addTodo: (todos: any) => {
-        set((state) => ({ todo: [...state.todo, todos] }))
+    addTodo: (todos) => {
+        set(state => ({
+            todo: [
+                ...state.todo,
+                {
+                    title: todos,
+                }
+            ]
+        }))
+        localStorage.setItem('todo', JSON.stringify(get().todo))
     },
-    updateTodo: (data) => {
-        console.log(data, data)
+    getTodo: () => {
+        const data: any = localStorage.getItem('todo')
+        return JSON.parse(data)
     },
-    deleteTodo: () => {
-
+    updateTodo: (item, id) => {
+    },
+    deleteTodo: (id) => {
+        const parse: any = localStorage.getItem('todo')
+        const data = JSON.parse(parse)
+        const newData = data.filter((item: any, idx: number) => idx !== id)
+        localStorage.setItem('todo', JSON.stringify(newData))
     }
 }));
 

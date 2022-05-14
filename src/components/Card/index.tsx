@@ -1,12 +1,32 @@
 import { FiMoreVertical, FiEdit, FiDelete } from "react-icons/fi";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import { useState, useRef } from "react";
+import { useForm } from "react-hook-form";
+import Modal from "../Modal";
 import useStore from "../../hook/useStore";
+
 type ICard = {
   todo: string;
+  id: number;
 };
+
 export const Card = (props: ICard) => {
-  console.log("🚀 ~ file: index.tsx ~ line 10 ~ Card ~ props", props);
+  const state = useStore();
+  const [open, setOpen] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data: any) => {
+    state.updateTodo(data.todo, props.id);
+    setOpen(false);
+    reset();
+  };
+
   return (
     <div className="flex w-full cursor-pointer items-center justify-between rounded-md bg-slate-200/30 p-5 hover:bg-slate-500/10">
       <p className="truncate pr-6">{props.todo}</p>
@@ -31,6 +51,7 @@ export const Card = (props: ICard) => {
               <Menu.Item>
                 {({ active }) => (
                   <button
+                    onClick={() => setOpen(true)}
                     className={`${
                       active ? "bg-sky-800 text-white" : "text-gray-900"
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
@@ -50,6 +71,7 @@ export const Card = (props: ICard) => {
                     className={`${
                       active ? "bg-sky-800 text-white" : "text-gray-900"
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                    onClick={() => state.deleteTodo(props.id)}
                   >
                     {active ? (
                       <FiDelete className="mr-2 h-5 w-5" aria-hidden="true" />
@@ -64,6 +86,29 @@ export const Card = (props: ICard) => {
           </Menu.Items>
         </Transition>
       </Menu>
+
+      <Modal
+        title="What do you want to do?"
+        open={open}
+        close={() => setOpen(false)}
+        children={
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <textarea
+              className="w-full rounded-md border-2 border-sky-800/50 p-2"
+              {...register("todo", { required: true, value: props.todo })}
+            />
+            {errors.todo && (
+              <span className="text-red-500">This field is required</span>
+            )}
+            <button
+              className="mt-3 w-full rounded-md bg-sky-700 p-2 text-white hover:bg-sky-800"
+              type="submit"
+            >
+              Submit
+            </button>
+          </form>
+        }
+      />
     </div>
   );
 };

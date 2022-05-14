@@ -7,6 +7,7 @@ type IModal = {
   children: React.ReactNode;
   title: string;
 };
+
 export default function Modal(props: IModal) {
   return (
     <>
