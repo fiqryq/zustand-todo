@@ -10,8 +10,8 @@ function App() {
       <Container>
         <Header />
         <div className="space-y-2 p-3 py-16">
-          {state.getTodo().map((item: any, idx: any) => {
-            return <Card key={idx} id={idx} todo={item.title} />;
+          {state.todo.map((item: any, idx: any) => {
+            return <Card key={idx} id={item.id} todo={item.title} />;
           })}
         </div>
         <Fab />

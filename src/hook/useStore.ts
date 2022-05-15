@@ -1,15 +1,10 @@
 import create from 'zustand';
 
 type IZustand = {
-    todo: Array<ITodo>
+    todo: Array<any>
     addTodo: (payload: string) => void
-    updateTodo: (item: string, id: number) => void
-    getTodo: () => Array<any>
+    updateTodo: (todo: string, id: number) => void
     deleteTodo: (id: number) => void
-}
-
-type ITodo = {
-    title: string
 }
 
 const useStore = create<IZustand>((set, get) => ({
@@ -19,23 +14,29 @@ const useStore = create<IZustand>((set, get) => ({
             todo: [
                 ...state.todo,
                 {
+                    id: Math.random() * 100,
                     title: todos,
                 }
             ]
         }))
-        localStorage.setItem('todo', JSON.stringify(get().todo))
     },
-    getTodo: () => {
-        const data: any = localStorage.getItem('todo')
-        return JSON.parse(data)
-    },
-    updateTodo: (item, id) => {
+    updateTodo: (todo, id) => {
+        set((state) => ({
+            todo: state.todo.map(items => {
+                if (items.id === id) {
+                    return {
+                        ...items,
+                        id: items.id,
+                        title: todo
+                    }
+                } else {
+                    return items
+                }
+            })
+        }))
     },
     deleteTodo: (id) => {
-        const parse: any = localStorage.getItem('todo')
-        const data = JSON.parse(parse)
-        const newData = data.filter((item: any, idx: number) => idx !== id)
-        localStorage.setItem('todo', JSON.stringify(newData))
+        set((state) => ({ todo: state.todo.filter(item => item.id !== id) }))
     }
 }));
 
